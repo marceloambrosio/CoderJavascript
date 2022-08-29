@@ -4,7 +4,7 @@ HACER UN WHILE QUE DIGA CUANTO DINERO SE INGRESA CADA VEZ
 FINALIZAR CON UN MENSAJE CUANDO LLEGUE AL OBJETIVO */
 
 let objetivo = prompt("Cuanto dinero (U$D) quieres ahorrar?")
-objetivo=parseInt(objetivo);
+objetivo = parseInt(objetivo);
 
 let ahorro = 0;
 let ingreso = 0;
