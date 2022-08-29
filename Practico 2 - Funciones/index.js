@@ -8,7 +8,7 @@ function calcularCuotas(montoPrestamo, montoIngresos, cantCuotas) {
     //Calcula el valor de la cuota (El prestamo tiene un 10% de recargo)
     let montoCuota = ((montoPrestamo * 1.1) / cantCuotas);
     //Calcula la cantidad minima de cuotas que necesita para pagar
-    let minCuotas = Math.trunc(montoPrestamo / maxCuota) + 1;
+    let minCuotas = Math.trunc((montoPrestamo * 1.1) / maxCuota) + 1;
 
     if (montoCuota > maxCuota) {
         alert(`No se puede aprobar el credito\n
