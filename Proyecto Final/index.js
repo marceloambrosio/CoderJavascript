@@ -21,22 +21,22 @@ var prestamosAprobados = [
         this.montoCuota = montoCuota;
     }
 }
-new PrestamosAprobados(5000,12,459);
-new PrestamosAprobados(5000,6,875);
-new PrestamosAprobados(3000,24,150); */
+*/
 
 
 
 //Esta variables son las cantidades de cuotas que se van a permitir segun los ingresos
 var cuotasValidas = [];
 
+//Solicita los datos necesarios para iniciar
 let prestamo = prompt("Ingrese el monto que desea solicitar");
 let ingresos = prompt("Ingrese el monto total de sus ingresos mensuales");
 
-calcularCuotas(prestamo, ingresos);
+
+calcularPrestamo(prestamo, ingresos);
 
 
-function calcularCuotas(montoPrestamo, montoIngresos) {
+function calcularPrestamo(montoPrestamo, montoIngresos) {
     //Esto calcula el monto maximo de la cuota (30% de los ingresos)
     let maxCuota = montoIngresos * 0.3;
     //Calcula la cantidad minima de cuotas que necesita para pagar
@@ -54,7 +54,7 @@ function calcularCuotas(montoPrestamo, montoIngresos) {
     } else {
 
         //No hay validacion de cuotas porque se va a resolver con un select en el html
-        let cantCuotas = prompt(`Ingrese la cantidad de cuotas que desea pagar\nPuede elegir ${cuotasValidas.join(",")}`)
+        let cantCuotas = prompt(`Ingrese la cantidad de cuotas que desea pagar\nPuede elegir ${cuotasValidas.join(", ")}`)
 
         let interes = 0;
 
@@ -63,7 +63,7 @@ function calcularCuotas(montoPrestamo, montoIngresos) {
             if (cantCuotas == parseInt(item.tipo)) interes = parseInt(item.interes) / 100 + 1;
         }
 
-        //Calcula el monto de la cuota con el interes
+        //Calcula el monto de la cuota con el interes correspondiente
         let montoCuota = Math.ceil((montoPrestamo * interes) / cantCuotas);
 
         alert(`¡Felicitades, se aprobo su credito!\n
