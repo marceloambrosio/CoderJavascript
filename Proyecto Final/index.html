@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<!-- Todo el HTML y CSS son posibles ideas de como 
+    ordenar el proyecto con el poco conocimiento
+    que tenia antes del curso 
+    NADA ES FUNCIONAL DE MOMENTO -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            Simulador de prestamo
+            <a href="#solicitud">Solicitud</a>
+            <a href="#tasas">Tasas</a>
+            <a href="#historial">Historial</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="solicitud">
+            <h2>Solicitud de prestamo</h2>
+            <h5>Ingrese su nombre</h5>
+            <input type="nombreCliente">
+            <h5>Ingrese su apellido</h5>
+            <input type="apellidoCliente">
+            <h5>Ingrese el monto a solicitar</h5>
+            <input type="montoPrestamo">
+            <h5>Ingrese sus ingresos mensuales</h5>
+            <input type="ingresoMensual">
+
+            <!-- Se habilitarian unicamente los planes de cuotas posibles unicamente -->
+            <!-- En el caso de no poder usar ninguno, se envia un alert detallando -->
+            <h5>Seleccione el plan de cuotas</h5>
+            <select name="tipoPrestamo" id="tipoPrestamo">
+                <option value="6">Hasta 6</option>
+                <option value="12">Hasta 12</option>
+                <option value="18">Hasta 18</option>
+                <option value="24">Hasta 24</option>
+                <option value="36">Hasta 36</option>
+            </select>
+        </section>
+
+        <section id="tasas">
+            <h2>Tasas de interes</h2>
+            Las tasas de los prestamos son:
+            <!-- Mostrar array con la cantidad de cuotas y tasa de interes -->
+
+            Terminos y condiciones
+            La cuota de los prestamos solicitados no pueden superar el 30% de ingresos mensuales
+        </section>
+
+        <section id="historial">
+            <h2>Historial de prestamos aprobados</h2>
+            <!-- Lista del array en donde se cargan todos los prestamos aprobados -->
+        </section>
+
+    </main>
+
+</body>
+
+</html>
