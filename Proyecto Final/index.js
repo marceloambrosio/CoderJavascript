@@ -8,9 +8,12 @@ const tipoPrestamo = [
 
 //Prestamos aprobados precargados, para mostrar al final de proyecto
 var prestamosAprobados = [
-    [5000, 12, 459],
-    [5000, 6, 875],
-    [3000, 24, 150],
+    { montoPrestamo: 5000, cantCuotas: 12, montoCuota: 459 },
+    { montoPrestamo: 5000, cantCuotas: 6, montoCuota: 875 },
+    { montoPrestamo: 3000, cantCuotas: 24, montoCuota: 150 },
+    /*     [5000, 12, 459],
+        [5000, 6, 875],
+        [3000, 24, 150], */
 ];
 
 //PrestamosAprobados va a ser una clase de ser necesario
@@ -20,8 +23,29 @@ var prestamosAprobados = [
         this.cantCuotas = cantCuotas;
         this.montoCuota = montoCuota;
     }
+} */
+
+
+/* INPUTS */
+let botonPrestamo = document.getElementById("btnSolicitar");
+botonPrestamo.addEventListener("click", () => {
+    console.log("Se hizo click");
+    let nombre = document.getElementById("nombreCliente").value;
+    alert(nombre);
+    let apellido = document.getElementById("apellidoCliente").value;
+    alert(apellido);
+    let monto = document.getElementById("montoPrestamo").value;
+    alert(monto);
+    let ingresos = document.getElementById("ingresoMensual").value;
+    alert(ingresos);
+    let tipo = document.getElementById("selectPrestamo").value;
+    alert(tipo);
+
+    calcularPrestamo(monto,ingresos);
 }
-*/
+)
+
+/* calcularPrestamo(monto, ingresos); */
 
 
 
@@ -29,12 +53,32 @@ var prestamosAprobados = [
 var cuotasValidas = [];
 
 //Solicita los datos necesarios para iniciar
-let prestamo = prompt("Ingrese el monto que desea solicitar");
+/* let prestamo = prompt("Ingrese el monto que desea solicitar");
 let ingresos = prompt("Ingrese el monto total de sus ingresos mensuales");
 
+calcularPrestamo(prestamo, ingresos); */
 
-calcularPrestamo(prestamo, ingresos);
 
+let historialPrestamos = document.getElementById("historialPrestamos");
+for (const prest of prestamosAprobados) {
+    let li = document.createElement("li");
+    li.innerHTML = `Prestamo: $${prest.montoPrestamo} | ${prest.cantCuotas} cuotas de $${prest.montoCuota}.`;
+    historialPrestamos.append(li);
+};
+
+let selectPrestamo = document.getElementById("selectPrestamo");
+for (const item of tipoPrestamo) {
+    let option = document.createElement("option");
+    option.innerHTML = `${item.tipo} cuotas con ${item.interes}% de interes`;
+    selectPrestamo.append(option);
+};
+
+let tasasPrestamo = document.getElementById("tasasPrestamo");
+for (const item of tipoPrestamo) {
+    let li = document.createElement("li");
+    li.innerHTML = `Para ${item.tipo} cuotas --> ${item.interes}% de interes`;
+    tasasPrestamo.append(li);
+};
 
 function calcularPrestamo(montoPrestamo, montoIngresos) {
     //Esto calcula el monto maximo de la cuota (30% de los ingresos)
@@ -68,10 +112,11 @@ function calcularPrestamo(montoPrestamo, montoIngresos) {
 
         alert(`¡Felicitades, se aprobo su credito!\n
         Detalle: ${cantCuotas} cuotas de $${montoCuota}.`);
+        prestamosAprobados.push({ montoPrestamo, cantCuotas, montoCuota });
         //Se agrega al array de los prestamos aprobados
-        prestamosAprobados.push([montoPrestamo, cantCuotas, montoCuota]);
+        /* prestamosAprobados.push([montoPrestamo, cantCuotas, montoCuota]); */
         //Se muestran todos los prestamos aprobados
-        alert(`Historial de prestamos aprobados:\n\nMonto prestamo, Cantidad cuotas, Monto cuota\n${prestamosAprobados.join("\n")}`)
+        /* alert(`Historial de prestamos aprobados:\n\nMonto prestamo, Cantidad cuotas, Monto cuota\n${prestamosAprobados.join("\n")}`) */
     }
 
 }
@@ -86,3 +131,5 @@ function calcularPrestamo(montoPrestamo, montoIngresos) {
         Prestamo 5000
         Ingresos 200
 */
+
+
