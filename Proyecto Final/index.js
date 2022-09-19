@@ -69,16 +69,18 @@ function calcularPrestamo(montoPrestamo, cuotasPrestamo) {
     let interesPrestamo = 0;
     //Carga en un array las cantidades de cuotas posibles
     for (const item of tipoPrestamo) {
-        /* if (minCuotas <= parseInt(item.tipo)) cuotasValidas.push(item.tipo) */
         if (cuotasPrestamo === item.tipo) interesPrestamo = item.interes / 100 + 1;
     }
 
+    //Se agrega el interes y se calculan las cuotas en base a ese valor
     prestamoConInteres = Math.ceil(montoPrestamo * interesPrestamo);
     montoCuotas = Math.ceil(montoPrestamo / cuotasPrestamo);
 
     alert(`¡Felicitades, se aprobo su prestamo de $${montoPrestamo}!\n
         Detalle: ${cuotasPrestamo} cuotas de $${montoCuotas}.`);
 
+
+    //PARA ACTUALIZAR LOS PRESTAMOS APROBADOS EN EL LOCALSTORAGE
     //Cargo un objeto con los nuevos datos
     let nuevosDatos = { montPrest: montoPrestamo, cantCuot: cuotasPrestamo, montCuot: montoCuotas };
     //Cargos los elementos cargados del localstorage en datosExistentes
