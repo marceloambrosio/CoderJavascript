@@ -6,32 +6,19 @@ const tipoPrestamo = [
     { tipo: 36, interes: 30 },
 ];
 
-//Prestamos aprobados precargados, para mostrar al final de proyecto
-var prestamosAprobados = [
-    { montoPrestamo: 5000, cantCuotas: 12, montoCuota: 459 },
-    { montoPrestamo: 5000, cantCuotas: 6, montoCuota: 875 },
-    { montoPrestamo: 3000, cantCuotas: 24, montoCuota: 150 },
-];
-
-//PrestamosAprobados va a ser una clase de ser necesario
-/* class PrestamosAprobados {
-    constructor(montoPrestamo, cantCuotas, montoCuota) {
-        this.montoPrestamo = montoPrestamo;
-        this.cantCuotas = cantCuotas;
-        this.montoCuota = montoCuota;
-    }
-} */
+//Verifico si no hay ningun prestamo cargado, si no hay cargo uno
+if (JSON.parse(localStorage.getItem("prestamosAprobados")).length === 0) localStorage.setItem("prestamosAprobados", JSON.stringify([{ montPrest: 5000, cantCuot: 12, montCuot: 459 }]));
 
 
 /* INPUTS */
 let botonPrestamo = document.getElementById("btnSolicitar");
-botonPrestamo.addEventListener("click", () => {
-    console.log("Se hizo click");
+botonPrestamo.addEventListener("click", (e) => {
+    e.preventDefault();
     let nombre = document.getElementById("nombreCliente").value;
     let apellido = document.getElementById("apellidoCliente").value;
     let monto = document.getElementById("montoPrestamo").value;
     let ingresos = document.getElementById("ingresoMensual").value;
-    let tipo = parseInt((document.getElementById("selectPrestamo").value).substring(0,2));
+    let tipo = parseInt((document.getElementById("selectPrestamo").value).substring(0, 2));
 
     calcularPrestamo(monto, tipo);
 });
@@ -50,27 +37,27 @@ ingresosInput.onkeyup = () => {
     let selectPrestamo = document.getElementById("selectPrestamo");
 
     //Esto borra la lista del select para que no se carguen siempre
-    while (selectPrestamo.firstChild){
+    while (selectPrestamo.firstChild) {
         selectPrestamo.removeChild(selectPrestamo.firstChild)
     }
-        for (const item of tipoPrestamo) {
-            if (minCuotas <= parseInt(item.tipo)) {
-                let option = document.createElement("option");
-                option.innerHTML = `${item.tipo} cuotas con ${item.interes}% de interes`;
-                selectPrestamo.append(option);
-            }
+    for (const item of tipoPrestamo) {
+        if (minCuotas <= parseInt(item.tipo)) {
+            let option = document.createElement("option");
+            option.innerHTML = `${item.tipo} cuotas con ${item.interes}% de interes`;
+            selectPrestamo.append(option);
         }
-
     }
 
+}
+
 //Carga el array de historial de prestamos en la section
-let historialPrestamos = document.getElementById("historialPrestamos");
+/* let historialPrestamos = document.getElementById("historialPrestamos");
 for (const prest of prestamosAprobados) {
     let li = document.createElement("li");
     li.innerHTML = `Prestamo: $${prest.montoPrestamo} | ${prest.cantCuotas} cuotas de $${prest.montoCuota}.`;
     historialPrestamos.append(li);
 };
-
+ */
 //Carga las tasas de interes del section
 let tasasPrestamo = document.getElementById("tasasPrestamo");
 for (const item of tipoPrestamo) {
@@ -79,21 +66,27 @@ for (const item of tipoPrestamo) {
     tasasPrestamo.append(li);
 };
 
-function calcularPrestamo(montoPrestamo, cuotasPrestamo) {
 
+function calcularPrestamo(montoPrestamo, cuotasPrestamo) {
     let interesPrestamo = 0;
     //Carga en un array las cantidades de cuotas posibles
     for (const item of tipoPrestamo) {
         /* if (minCuotas <= parseInt(item.tipo)) cuotasValidas.push(item.tipo) */
-        if (cuotasPrestamo===item.tipo) interesPrestamo = item.interes / 100 + 1;
+        if (cuotasPrestamo === item.tipo) interesPrestamo = item.interes / 100 + 1;
     }
 
-    montoPrestamo = Math.ceil(montoPrestamo * interesPrestamo);
+    prestamoConInteres = Math.ceil(montoPrestamo * interesPrestamo);
     montoCuotas = Math.ceil(montoPrestamo / cuotasPrestamo);
 
     alert(`¡Felicitades, se aprobo su prestamo de $${montoPrestamo}!\n
         Detalle: ${cuotasPrestamo} cuotas de $${montoCuotas}.`);
 
-    prestamosAprobados.push({montoPrestamo: montoPrestamo, cantCuotas: cuotasPrestamo, montoCuota: montoCuotas});
-
+    //Cargo un objeto con los nuevos datos
+    let nuevosDatos = { montPrest: montoPrestamo, cantCuot: cuotasPrestamo, montCuot: montoCuotas };
+    //Cargos los elementos cargados del localstorage en datosExistentes
+    let datosExistentes = JSON.parse(localStorage.getItem("prestamosAprobados"));
+    //Agregos el nuevo objeto
+    datosExistentes.push(nuevosDatos);
+    //Cargo todo al localstorage
+    localStorage.setItem('prestamosAprobados', JSON.stringify(datosExistentes));
 }
