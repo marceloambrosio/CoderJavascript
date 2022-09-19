@@ -7,13 +7,11 @@ const tipoPrestamo = [
 ];
 
 //Verifico si no hay ningun prestamo cargado, si no hay cargo uno
-if (JSON.parse(localStorage.getItem("prestamosAprobados")).length === 0) localStorage.setItem("prestamosAprobados", JSON.stringify([{ montPrest: 5000, cantCuot: 12, montCuot: 459 }]));
-
+if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ montPrest: 5000, cantCuot: 12, montCuot: 459 }]));
 
 /* INPUTS */
 let botonPrestamo = document.getElementById("btnSolicitar");
-botonPrestamo.addEventListener("click", (e) => {
-    e.preventDefault();
+botonPrestamo.addEventListener("click", () => {
     let nombre = document.getElementById("nombreCliente").value;
     let apellido = document.getElementById("apellidoCliente").value;
     let monto = document.getElementById("montoPrestamo").value;
@@ -50,14 +48,14 @@ ingresosInput.onkeyup = () => {
 
 }
 
-//Carga el array de historial de prestamos en la section
-/* let historialPrestamos = document.getElementById("historialPrestamos");
+//Carga el historial de prestamos del localstorage en la section
+let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
 for (const prest of prestamosAprobados) {
     let li = document.createElement("li");
-    li.innerHTML = `Prestamo: $${prest.montoPrestamo} | ${prest.cantCuotas} cuotas de $${prest.montoCuota}.`;
+    li.innerHTML = `Prestamo: $${prest.montPrest} | ${prest.cantCuot} cuotas de $${prest.montCuot}.`;
     historialPrestamos.append(li);
 };
- */
+
 //Carga las tasas de interes del section
 let tasasPrestamo = document.getElementById("tasasPrestamo");
 for (const item of tipoPrestamo) {
