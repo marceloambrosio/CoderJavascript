@@ -99,7 +99,7 @@ function calcularPrestamo(nombreCliente, apellidoCliente, montoPrestamo, cuotasP
 
     //Se agrega el interes y se calculan las cuotas en base a ese valor
     prestamoConInteres = Math.ceil(montoPrestamo * interesPrestamo);
-    montoCuotas = Math.ceil(montoPrestamo / cuotasPrestamo);
+    montoCuotas = Math.ceil(prestamoConInteres / cuotasPrestamo);
 
     alert(`¡Felicitades, se aprobo su prestamo de $${montoPrestamo}!\n
         Detalle: ${cuotasPrestamo} cuotas de $${montoCuotas}.`);
