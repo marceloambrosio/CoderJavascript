@@ -21,6 +21,15 @@ botonPrestamo.addEventListener("click", () => {
     calcularPrestamo(monto, tipo);
 });
 
+let botonLimpiar = document.getElementById("btnLimpiar");
+botonLimpiar.addEventListener("click", () => {
+    document.getElementById("nombreCliente").value = "";
+    document.getElementById("apellidoCliente").value ="";
+    document.getElementById("montoPrestamo").value = "";
+    document.getElementById("ingresoMensual").value = "";
+    document.getElementById("selectPrestamo").value = "";
+});
+
 let ingresosInput = document.getElementById("ingresoMensual");
 ingresosInput.onkeyup = () => {
     //Esto calcula el monto maximo de la cuota (30% de los ingresos)
