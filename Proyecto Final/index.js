@@ -7,7 +7,8 @@ const tipoPrestamo = [
 ];
 
 //Verifico si no hay ningun prestamo cargado, si no hay cargo uno
-if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ montPrest: 5000, cantCuot: 12, montCuot: 459 }]));
+//if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: 'Juan', apelClient: 'Perez',montPrest: 5000, cantCuot: 12, montCuot: 459 }]));
+if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient:'', apelClient:'', montPrest:'', cantCuot:'', montCuot:'' }]));
 
 /* INPUTS */
 let botonPrestamo = document.getElementById("btnSolicitar");
@@ -18,16 +19,23 @@ botonPrestamo.addEventListener("click", () => {
     let ingresos = document.getElementById("ingresoMensual").value;
     let tipo = parseInt((document.getElementById("selectPrestamo").value).substring(0, 2));
 
-    calcularPrestamo(monto, tipo);
+    calcularPrestamo(nombre, apellido, monto, tipo);
 });
 
 let botonLimpiar = document.getElementById("btnLimpiar");
 botonLimpiar.addEventListener("click", () => {
     document.getElementById("nombreCliente").value = "";
-    document.getElementById("apellidoCliente").value ="";
+    document.getElementById("apellidoCliente").value = "";
     document.getElementById("montoPrestamo").value = "";
     document.getElementById("ingresoMensual").value = "";
     document.getElementById("selectPrestamo").value = "";
+});
+
+let botonLimpiarHistorial = document.getElementById("btnLimpiarHistorial");
+botonLimpiarHistorial.addEventListener("click", () => {
+    localStorage.clear();
+    localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient:'', apelClient:'', montPrest:'', cantCuot:'', montCuot:'' }]));
+    window.location.reload();
 });
 
 let ingresosInput = document.getElementById("ingresoMensual");
@@ -60,10 +68,12 @@ ingresosInput.onkeyup = () => {
 //Carga el historial de prestamos del localstorage en la section
 let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
 for (const prest of prestamosAprobados) {
+    if (prest.apelClient !='' & prest.nomClient !='' & prest.montPrest !='' & prest.cantCuot !='' & prest.montCuot !=''){
     let li = document.createElement("li");
-    li.innerHTML = `Prestamo: $${prest.montPrest} | ${prest.cantCuot} cuotas de $${prest.montCuot}.`;
+    li.innerHTML = `${prest.apelClient}, ${prest.nomClient} | Prestamo: $${prest.montPrest} | ${prest.cantCuot} cuotas de $${prest.montCuot}.`;
     li.classList.add('list-group-item');
     historialPrestamos.append(li);
+}
 };
 
 //Carga las tasas de interes del section
@@ -72,11 +82,15 @@ for (const item of tipoPrestamo) {
     let li = document.createElement("li");
     li.innerHTML = `Para ${item.tipo} cuotas --> ${item.interes}% de interes`;
     li.classList.add('list-group-item');
+    li.setAttribute('id','listaTasas');
     tasasPrestamo.append(li);
 };
 
+let activeTasas = document.getElementById('listaTasas')
+activeTasas.onmousemove = () => { activeTasas.classList.add('text-bg-warning') }
+activeTasas.onmouseout = () => { activeTasas.classList.remove('text-bg-warning') }
 
-function calcularPrestamo(montoPrestamo, cuotasPrestamo) {
+function calcularPrestamo(nombreCliente, apellidoCliente, montoPrestamo, cuotasPrestamo) {
     let interesPrestamo = 0;
     //Carga en un array las cantidades de cuotas posibles
     for (const item of tipoPrestamo) {
@@ -93,7 +107,7 @@ function calcularPrestamo(montoPrestamo, cuotasPrestamo) {
 
     //PARA ACTUALIZAR LOS PRESTAMOS APROBADOS EN EL LOCALSTORAGE
     //Cargo un objeto con los nuevos datos
-    let nuevosDatos = { montPrest: montoPrestamo, cantCuot: cuotasPrestamo, montCuot: montoCuotas };
+    let nuevosDatos = { nomClient: nombreCliente, apelClient: apellidoCliente, montPrest: montoPrestamo, cantCuot: cuotasPrestamo, montCuot: montoCuotas };
     //Cargos los elementos cargados del localstorage en datosExistentes
     let datosExistentes = JSON.parse(localStorage.getItem("prestamosAprobados"));
     //Agregos el nuevo objeto
