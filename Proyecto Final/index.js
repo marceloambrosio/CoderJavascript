@@ -53,6 +53,7 @@ let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
 for (const prest of prestamosAprobados) {
     let li = document.createElement("li");
     li.innerHTML = `Prestamo: $${prest.montPrest} | ${prest.cantCuot} cuotas de $${prest.montCuot}.`;
+    li.classList.add('list-group-item');
     historialPrestamos.append(li);
 };
 
@@ -61,6 +62,7 @@ let tasasPrestamo = document.getElementById("tasasPrestamo");
 for (const item of tipoPrestamo) {
     let li = document.createElement("li");
     li.innerHTML = `Para ${item.tipo} cuotas --> ${item.interes}% de interes`;
+    li.classList.add('list-group-item');
     tasasPrestamo.append(li);
 };
 

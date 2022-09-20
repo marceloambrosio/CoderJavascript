@@ -12,58 +12,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 </head>
 
 <body>
     <header>
-        <nav>
-            Simulador de prestamo
-            <a href="#solicitud">Solicitud</a>
-            <a href="#tasas">Tasas</a>
-            <a href="#historial">Historial</a>
+        <nav class="navbar navbar-expand-lg sticky-top bg-warning">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Simulador de prestamos</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#solicitud">Solicitud</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#tasas">Tasas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#historial">Historial</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
 
     <main>
-        <section id="solicitud">
-            <form id="formularioSolicitud">
-                <h2>Solicitud de prestamo</h2>
-                <h5>Ingrese su nombre</h5>
-                <input id="nombreCliente">
-                <h5>Ingrese su apellido</h5>
-                <input id="apellidoCliente">
-                <h5>Ingrese el monto a solicitar</h5>
-                <input id="montoPrestamo">
-                <h5>Ingrese sus ingresos mensuales</h5>
-                <input id="ingresoMensual">
-                <!-- Se habilitarian unicamente los planes de cuotas posibles unicamente -->
-                <!-- En el caso de no poder usar ninguno, se envia un alert detallando -->
-                <h5>Seleccione el plan de cuotas</h5>
-                <select name="tipoPrestamo" id="selectPrestamo"></select>
-                <button id="btnSolicitar">Solicitar</button>
-            </form>
+        <section id="solicitud" class="container-fluid">
+            <div class="container-lg px-4 my-4 card rounded-3 shadow-sm">
+                <form id="formularioSolicitud">
+                    <h2>Solicitud de prestamo</h2>
+                    <div class="row">
+                        <div class="col">
+                            <label class="mb-2">Ingrese su nombre</label>
+                            <input id="nombreCliente" class="form-control mb-2">
+                        </div>
+                        <div class="col">
+                            <label class="mb-2">Ingrese su apellido</label>
+                            <input id="apellidoCliente" class="form-control mb-2">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="mb-2">Ingrese el monto a solicitar</label>
+                            <input id="montoPrestamo" class="form-control mb-2">
+                        </div>
+                        <div class="col">
+                            <label class="mb-2">Ingrese sus ingresos mensuales</label>
+                            <input id="ingresoMensual" class="form-control mb-2">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <!-- Se habilitarian unicamente los planes de cuotas posibles unicamente -->
+                            <!-- En el caso de no poder usar ninguno, se envia un alert detallando -->
+                            <label class="mb-2">Seleccione el plan de cuotas</label>
+                            <select name="tipoPrestamo" id="selectPrestamo" class="form-select"></select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <button id="btnSolicitar" class="btn btn-light col mb-4">Limpiar</button>
+                        <button id="btnSolicitar" class="btn btn-warning col mb-4">Solicitar</button>
+                    </div>
+                </form>
+            </div>
         </section>
 
         <section id="tasas">
-            <h2>Tasas de interes</h2>
-            Las tasas de los prestamos son:
-            <ul id="tasasPrestamo"></ul>
+            <div class="container-sm px-4 my-4 card rounded-3 shadow-sm">
+                <h2>Tasas de interes</h2>
+                Las tasas de los prestamos son:
+                <ul id="tasasPrestamo" class="list-group col"></ul>
 
-            Terminos y condiciones
-            La cuota de los prestamos solicitados no pueden superar el 30% de ingresos mensuales
-            <!-- Mostrar un simulador de cantidad maxima que puede solicitar segun ingresos -->
+                <br>
+                <label>Terminos y condiciones</label>
+                <label class="mb-4">La cuota de los prestamos solicitados no pueden superar el 30% de ingresos
+                    mensuales</label>
+                <!-- Mostrar un simulador de cantidad maxima que puede solicitar segun ingresos -->
+            </div>
         </section>
 
         <section id="historial">
-            <h2>Historial de prestamos aprobados</h2>
-            <!-- Lista del array en donde se cargan todos los prestamos aprobados -->
-            <ul id="historialPrestamos"></ul>
+            <div class="container-sm px-4 my-4 card rounded-3 shadow-sm">
+                <h2>Historial de prestamos aprobados</h2>
+                <!-- Lista del array en donde se cargan todos los prestamos aprobados -->
+                <ul id="historialPrestamos" class="list-group col mb-4"></ul>
+            </div>
         </section>
 
     </main>
     <script src="./index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
