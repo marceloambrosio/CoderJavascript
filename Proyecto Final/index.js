@@ -8,7 +8,7 @@ const tipoPrestamo = [
 
 //Verifico si no hay ningun prestamo cargado, si no hay cargo uno
 //if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: 'Juan', apelClient: 'Perez',montPrest: 5000, cantCuot: 12, montCuot: 459 }]));
-if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient:'', apelClient:'', montPrest:'', cantCuot:'', montCuot:'' }]));
+if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
 
 /* INPUTS */
 let botonPrestamo = document.getElementById("btnSolicitar");
@@ -34,7 +34,7 @@ botonLimpiar.addEventListener("click", () => {
 let botonLimpiarHistorial = document.getElementById("btnLimpiarHistorial");
 botonLimpiarHistorial.addEventListener("click", () => {
     localStorage.clear();
-    localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient:'', apelClient:'', montPrest:'', cantCuot:'', montCuot:'' }]));
+    localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
     window.location.reload();
 });
 
@@ -68,12 +68,12 @@ ingresosInput.onkeyup = () => {
 //Carga el historial de prestamos del localstorage en la section
 let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
 for (const prest of prestamosAprobados) {
-    if (prest.apelClient !='' & prest.nomClient !='' & prest.montPrest !='' & prest.cantCuot !='' & prest.montCuot !=''){
-    let li = document.createElement("li");
-    li.innerHTML = `${prest.apelClient}, ${prest.nomClient} | Prestamo: $${prest.montPrest} | ${prest.cantCuot} cuotas de $${prest.montCuot}.`;
-    li.classList.add('list-group-item');
-    historialPrestamos.append(li);
-}
+    if (prest.apelClient != '' & prest.nomClient != '' & prest.montPrest != '' & prest.cantCuot != '' & prest.montCuot != '') {
+        let li = document.createElement("li");
+        li.innerHTML = `${prest.apelClient}, ${prest.nomClient} | Prestamo: $${prest.montPrest} | ${prest.cantCuot} cuotas de $${prest.montCuot}.`;
+        li.classList.add('list-group-item');
+        historialPrestamos.append(li);
+    }
 };
 
 //Carga las tasas de interes del section
@@ -82,13 +82,25 @@ for (const item of tipoPrestamo) {
     let li = document.createElement("li");
     li.innerHTML = `Para ${item.tipo} cuotas --> ${item.interes}% de interes`;
     li.classList.add('list-group-item');
-    li.setAttribute('id','listaTasas');
+    li.setAttribute('id', 'listaTasas');
     tasasPrestamo.append(li);
 };
 
-let activeTasas = document.getElementById('listaTasas')
-activeTasas.onmousemove = () => { activeTasas.classList.add('text-bg-warning') }
-activeTasas.onmouseout = () => { activeTasas.classList.remove('text-bg-warning') }
+//Para pintar el listado de las tasas de interes
+//let activeTasas = document.getElementById('listaTasas');
+//activeTasas.onmousemove = () => { activeTasas.classList.add('text-bg-warning') }
+//activeTasas.onmouseout = () => { activeTasas.classList.remove('text-bg-warning') }
+
+let activeTasas = document.querySelectorAll('#listaTasas');
+const hoverActiveTasas = () => {
+    for (const tasa of activeTasas) {
+        tasa.onmousemove = () => { tasa.classList.add('text-bg-warning') }
+        tasa.onmouseout = () => { tasa.classList.remove('text-bg-warning') }
+    }
+}
+
+hoverActiveTasas();
+
 
 function calcularPrestamo(nombreCliente, apellidoCliente, montoPrestamo, cuotasPrestamo) {
     let interesPrestamo = 0;
