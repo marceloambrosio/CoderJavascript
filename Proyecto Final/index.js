@@ -22,6 +22,7 @@ botonPrestamo.addEventListener("click", () => {
     calcularPrestamo(nombre, apellido, monto, tipo);
 });
 
+//Limpiar todos los campos input
 let botonLimpiar = document.getElementById("btnLimpiar");
 botonLimpiar.addEventListener("click", () => {
     document.getElementById("nombreCliente").value = "";
@@ -87,10 +88,6 @@ for (const item of tipoPrestamo) {
 };
 
 //Para pintar el listado de las tasas de interes
-//let activeTasas = document.getElementById('listaTasas');
-//activeTasas.onmousemove = () => { activeTasas.classList.add('text-bg-warning') }
-//activeTasas.onmouseout = () => { activeTasas.classList.remove('text-bg-warning') }
-
 let activeTasas = document.querySelectorAll('#listaTasas');
 const hoverActiveTasas = () => {
     for (const tasa of activeTasas) {
