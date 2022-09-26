@@ -34,10 +34,34 @@ botonLimpiar.addEventListener("click", () => {
 
 let botonLimpiarHistorial = document.getElementById("btnLimpiarHistorial");
 botonLimpiarHistorial.addEventListener("click", () => {
+    Swal.fire({
+        title: 'Limpiar historial de prestamos?',
+        text: "Esto borrara todos los elementos guardados",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ffc107',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Limpiar',
+        cancelButtonText: 'Cancelar',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            limpiarHistoriaPrestamos();
+            Swal.fire({
+                icon: 'success',
+                title: 'Historial borrado',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              setTimeout(function(){window.location.reload();}, 1500);
+        }
+    });
+});
+
+
+function limpiarHistoriaPrestamos() {
     localStorage.clear();
     localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
-    window.location.reload();
-});
+}
 
 let ingresosInput = document.getElementById("ingresoMensual");
 ingresosInput.onkeyup = () => {
@@ -63,7 +87,6 @@ ingresosInput.onkeyup = () => {
             selectPrestamo.append(option);
         }
     }
-
 }
 
 //Carga el historial de prestamos del localstorage en la section
@@ -97,7 +120,6 @@ const hoverActiveTasas = () => {
 }
 
 hoverActiveTasas();
-
 
 function calcularPrestamo(nombreCliente, apellidoCliente, montoPrestamo, cuotasPrestamo) {
     let interesPrestamo = 0;
