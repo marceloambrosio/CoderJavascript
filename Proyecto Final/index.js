@@ -91,6 +91,11 @@ ingresosInput.onkeyup = () => {
 
 //Carga el historial de prestamos del localstorage en la section
 let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
+let liTitleHistorial = document.createElement("li");
+liTitleHistorial.innerHTML = `Prestamos aprobados`;
+liTitleHistorial.classList.add('list-group-item');
+liTitleHistorial.classList.add('text-bg-warning')
+historialPrestamos.append(liTitleHistorial);
 for (const prest of prestamosAprobados) {
     if (prest.apelClient != '' & prest.nomClient != '' & prest.montPrest != '' & prest.cantCuot != '' & prest.montCuot != '') {
         let li = document.createElement("li");
@@ -101,16 +106,33 @@ for (const prest of prestamosAprobados) {
 };
 
 //Carga las tasas de interes del section
-let tasasPrestamo = document.getElementById("tasasPrestamo");
+fetch("./tasas.json")
+.then((response) => response.json())
+.then((data) => {
+    let liTitle = document.createElement("li");
+    liTitle.innerHTML = `Tasas de interes por cuota`;
+    liTitle.classList.add('list-group-item');
+    liTitle.classList.add('text-bg-warning')
+    tasasPrestamo.append(liTitle);
+    data.forEach((item) =>{
+        let li = document.createElement("li");
+        li.innerHTML = `Para ${item.tipo} cuotas --> ${item.interes}% de interes`;
+        li.classList.add('list-group-item');
+        li.setAttribute('id', 'listaTasas');
+        tasasPrestamo.append(li);
+    })
+});
+
+/* let tasasPrestamo = document.getElementById("tasasPrestamo");
 for (const item of tipoPrestamo) {
     let li = document.createElement("li");
     li.innerHTML = `Para ${item.tipo} cuotas --> ${item.interes}% de interes`;
     li.classList.add('list-group-item');
     li.setAttribute('id', 'listaTasas');
     tasasPrestamo.append(li);
-};
+}; */
 
-//Para pintar el listado de las tasas de interes
+//Para pintar el listado de las tasas de interes POR MOMENTO DESACTIVADA
 let activeTasas = document.querySelectorAll('#listaTasas');
 const hoverActiveTasas = () => {
     for (const tasa of activeTasas) {
