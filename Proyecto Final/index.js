@@ -1,4 +1,4 @@
-//Tipos de prestamos precargados, para un futuro poder agregar mas
+//Tipos de prestamos precargados
 const tipoPrestamo = [
     { tipo: 6, interes: 5 },
     { tipo: 12, interes: 10 },
@@ -25,7 +25,7 @@ fetch("./tasas.json")
     });
 
 //Carga el historial de prestamos del localstorage en la section
-let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
+/* let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
 let liTitleHistorial = document.createElement("li");
 liTitleHistorial.innerHTML = `Prestamos aprobados`;
 liTitleHistorial.classList.add('list-group-item');
@@ -38,10 +38,32 @@ for (const prest of prestamosAprobados) {
         li.classList.add('list-group-item');
         historialPrestamos.append(li);
     }
+}; */
+
+let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
+let numeroRegistro = 0;
+for (const prest of prestamosAprobados) {
+    if (prest.apelClient != '' & prest.nomClient != '' & prest.montPrest != '' & prest.cantCuot != '' & prest.montCuot != '') {
+        numeroRegistro ++
+        let rowInicio = document.createElement("tr");
+        let rowNum = document.createElement("td");
+        let rowClient = document.createElement("td");
+        let rowPrest = document.createElement("td");
+        let rowDetal = document.createElement("td");
+        rowNum.innerHTML = `${numeroRegistro}`
+        rowClient.innerHTML = `${prest.apelClient}, ${prest.nomClient}`;
+        rowPrest.innerHTML = `${prest.montPrest}`;
+        rowDetal.innerHTML = `${prest.cantCuot} cuotas de $${prest.montCuot}.`;
+        rowInicio.appendChild(rowNum)
+        rowInicio.appendChild(rowClient)
+        rowInicio.appendChild(rowPrest)
+        rowInicio.appendChild(rowDetal)
+        historialPrestamos.append(rowInicio);
+    }
 };
 
+
 //Verifico si no hay ningun prestamo cargado, si no hay cargo uno
-//if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: 'Juan', apelClient: 'Perez',montPrest: 5000, cantCuot: 12, montCuot: 459 }]));
 if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
 
 /////////////////////////////* INPUTS *////////////////////////////////
@@ -90,7 +112,6 @@ botonLimpiarHistorial.addEventListener("click", (event) => {
                     confirmButtonColor: '#ffc107',
                     confirmButtonText: 'Cerrar',
                 }).then((result) => { window.location.reload() })
-                //setTimeout(function () { window.location.reload(); }, 1500);
             }
         });
 });
@@ -123,28 +144,14 @@ ingresosInput.onkeyup = () => {
     }
 }
 
-/* let tasasPrestamo = document.getElementById("tasasPrestamo");
-for (const item of tipoPrestamo) {
-    let li = document.createElement("li");
-    li.innerHTML = `Para ${item.tipo} cuotas --> ${item.interes}% de interes`;
-    li.classList.add('list-group-item');
-    li.setAttribute('id', 'listaTasas');
-    tasasPrestamo.append(li);
-}; */
-
 function calcularPrestamo(nombreCliente, apellidoCliente, montoPrestamo, cuotasPrestamo) {
     let interesPrestamo = 0;
     //Carga en un array las cantidades de cuotas posibles
-    for (const item of tipoPrestamo) {
-        if (cuotasPrestamo === item.tipo) interesPrestamo = item.interes / 100 + 1;
-    }
+    for (const item of tipoPrestamo) if (cuotasPrestamo === item.tipo) interesPrestamo = item.interes / 100 + 1;
 
     //Se agrega el interes y se calculan las cuotas en base a ese valor
     prestamoConInteres = Math.ceil(montoPrestamo * interesPrestamo);
     montoCuotas = Math.ceil(prestamoConInteres / cuotasPrestamo);
-
-    //alert(`¡Felicitades, se aprobo su prestamo de $${montoPrestamo}!\n
-    //    Detalle: ${cuotasPrestamo} cuotas de $${montoCuotas}.`);
 
     Swal.fire({
         icon: 'success',
