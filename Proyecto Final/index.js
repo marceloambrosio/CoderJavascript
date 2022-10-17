@@ -6,20 +6,56 @@ const tipoPrestamo = [
     { tipo: 36, interes: 30 },
 ];
 
+//Carga las tasas de interes del section
+fetch("./tasas.json")
+    .then((response) => response.json())
+    .then((data) => {
+        let liTitle = document.createElement("li");
+        liTitle.innerHTML = `Tasas de interes por cuota`;
+        liTitle.classList.add('list-group-item');
+        liTitle.classList.add('text-bg-warning')
+        tasasPrestamo.append(liTitle);
+        data.forEach((item) => {
+            let li = document.createElement("li");
+            li.innerHTML = `Para ${item.tipo} cuotas --> ${item.interes}% de interes`;
+            li.classList.add('list-group-item');
+            li.setAttribute('id', 'listaTasas');
+            tasasPrestamo.append(li);
+        })
+    });
+
+//Carga el historial de prestamos del localstorage en la section
+let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
+let liTitleHistorial = document.createElement("li");
+liTitleHistorial.innerHTML = `Prestamos aprobados`;
+liTitleHistorial.classList.add('list-group-item');
+liTitleHistorial.classList.add('text-bg-warning')
+historialPrestamos.append(liTitleHistorial);
+for (const prest of prestamosAprobados) {
+    if (prest.apelClient != '' & prest.nomClient != '' & prest.montPrest != '' & prest.cantCuot != '' & prest.montCuot != '') {
+        let li = document.createElement("li");
+        li.innerHTML = `${prest.apelClient}, ${prest.nomClient} | Prestamo: $${prest.montPrest} | ${prest.cantCuot} cuotas de $${prest.montCuot}.`;
+        li.classList.add('list-group-item');
+        historialPrestamos.append(li);
+    }
+};
+
 //Verifico si no hay ningun prestamo cargado, si no hay cargo uno
 //if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: 'Juan', apelClient: 'Perez',montPrest: 5000, cantCuot: 12, montCuot: 459 }]));
 if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
 
-/* INPUTS */
+/////////////////////////////* INPUTS *////////////////////////////////
 let botonPrestamo = document.getElementById("btnSolicitar");
-botonPrestamo.addEventListener("click", () => {
+botonPrestamo.addEventListener("click", (event) => {
     let nombre = document.getElementById("nombreCliente").value;
     let apellido = document.getElementById("apellidoCliente").value;
     let monto = document.getElementById("montoPrestamo").value;
     let ingresos = document.getElementById("ingresoMensual").value;
     let tipo = parseInt((document.getElementById("selectPrestamo").value).substring(0, 2));
 
+    event.preventDefault();
     calcularPrestamo(nombre, apellido, monto, tipo);
+    event.reload();
 });
 
 //Limpiar todos los campos input
@@ -33,35 +69,33 @@ botonLimpiar.addEventListener("click", () => {
 });
 
 let botonLimpiarHistorial = document.getElementById("btnLimpiarHistorial");
-botonLimpiarHistorial.addEventListener("click", () => {
-    Swal.fire({
-        title: 'Limpiar historial de prestamos?',
-        text: "Esto borrara todos los elementos guardados",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#ffc107',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Limpiar',
-        cancelButtonText: 'Cancelar',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            limpiarHistoriaPrestamos();
-            Swal.fire({
-                icon: 'success',
-                title: 'Historial borrado',
-                showConfirmButton: false,
-                timer: 1500
-              })
-              setTimeout(function(){window.location.reload();}, 1500);
-        }
-    });
+botonLimpiarHistorial.addEventListener("click", (event) => {
+    event.preventDefault(),
+        Swal.fire({
+            title: 'Limpiar historial de prestamos?',
+            text: "Esto borrara todos los elementos guardados",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ffc107',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Limpiar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                limpiarHistoriaPrestamos();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Historial borrado',
+                    showConfirmButton: true,
+                    confirmButtonColor: '#ffc107',
+                    confirmButtonText: 'Cerrar',
+                }).then((result) => { window.location.reload() })
+                //setTimeout(function () { window.location.reload(); }, 1500);
+            }
+        });
 });
 
-
-function limpiarHistoriaPrestamos() {
-    localStorage.clear();
-    localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
-}
+////////////////////////////////////////////////////////////////////////////////
 
 let ingresosInput = document.getElementById("ingresoMensual");
 ingresosInput.onkeyup = () => {
@@ -89,40 +123,6 @@ ingresosInput.onkeyup = () => {
     }
 }
 
-//Carga el historial de prestamos del localstorage en la section
-let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
-let liTitleHistorial = document.createElement("li");
-liTitleHistorial.innerHTML = `Prestamos aprobados`;
-liTitleHistorial.classList.add('list-group-item');
-liTitleHistorial.classList.add('text-bg-warning')
-historialPrestamos.append(liTitleHistorial);
-for (const prest of prestamosAprobados) {
-    if (prest.apelClient != '' & prest.nomClient != '' & prest.montPrest != '' & prest.cantCuot != '' & prest.montCuot != '') {
-        let li = document.createElement("li");
-        li.innerHTML = `${prest.apelClient}, ${prest.nomClient} | Prestamo: $${prest.montPrest} | ${prest.cantCuot} cuotas de $${prest.montCuot}.`;
-        li.classList.add('list-group-item');
-        historialPrestamos.append(li);
-    }
-};
-
-//Carga las tasas de interes del section
-fetch("./tasas.json")
-.then((response) => response.json())
-.then((data) => {
-    let liTitle = document.createElement("li");
-    liTitle.innerHTML = `Tasas de interes por cuota`;
-    liTitle.classList.add('list-group-item');
-    liTitle.classList.add('text-bg-warning')
-    tasasPrestamo.append(liTitle);
-    data.forEach((item) =>{
-        let li = document.createElement("li");
-        li.innerHTML = `Para ${item.tipo} cuotas --> ${item.interes}% de interes`;
-        li.classList.add('list-group-item');
-        li.setAttribute('id', 'listaTasas');
-        tasasPrestamo.append(li);
-    })
-});
-
 /* let tasasPrestamo = document.getElementById("tasasPrestamo");
 for (const item of tipoPrestamo) {
     let li = document.createElement("li");
@@ -131,17 +131,6 @@ for (const item of tipoPrestamo) {
     li.setAttribute('id', 'listaTasas');
     tasasPrestamo.append(li);
 }; */
-
-//Para pintar el listado de las tasas de interes POR MOMENTO DESACTIVADA
-let activeTasas = document.querySelectorAll('#listaTasas');
-const hoverActiveTasas = () => {
-    for (const tasa of activeTasas) {
-        tasa.onmousemove = () => { tasa.classList.add('text-bg-warning') }
-        tasa.onmouseout = () => { tasa.classList.remove('text-bg-warning') }
-    }
-}
-
-hoverActiveTasas();
 
 function calcularPrestamo(nombreCliente, apellidoCliente, montoPrestamo, cuotasPrestamo) {
     let interesPrestamo = 0;
@@ -154,9 +143,17 @@ function calcularPrestamo(nombreCliente, apellidoCliente, montoPrestamo, cuotasP
     prestamoConInteres = Math.ceil(montoPrestamo * interesPrestamo);
     montoCuotas = Math.ceil(prestamoConInteres / cuotasPrestamo);
 
-    alert(`¡Felicitades, se aprobo su prestamo de $${montoPrestamo}!\n
-        Detalle: ${cuotasPrestamo} cuotas de $${montoCuotas}.`);
+    //alert(`¡Felicitades, se aprobo su prestamo de $${montoPrestamo}!\n
+    //    Detalle: ${cuotasPrestamo} cuotas de $${montoCuotas}.`);
 
+    Swal.fire({
+        icon: 'success',
+        title: 'Prestamo aprobado',
+        text: `Detalle: ${cuotasPrestamo} cuotas de $${montoCuotas}.`,
+        showConfirmButton: true,
+        confirmButtonColor: '#ffc107',
+        confirmButtonText: 'Cerrar',
+    }).then((result) => { window.location.reload() })
 
     //PARA ACTUALIZAR LOS PRESTAMOS APROBADOS EN EL LOCALSTORAGE
     //Cargo un objeto con los nuevos datos
@@ -167,4 +164,9 @@ function calcularPrestamo(nombreCliente, apellidoCliente, montoPrestamo, cuotasP
     datosExistentes.push(nuevosDatos);
     //Cargo todo al localstorage
     localStorage.setItem('prestamosAprobados', JSON.stringify(datosExistentes));
+}
+
+function limpiarHistoriaPrestamos() {
+    localStorage.clear();
+    localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
 }
