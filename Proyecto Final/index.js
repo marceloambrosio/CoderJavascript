@@ -24,22 +24,7 @@ fetch("./tasas.json")
         })
     });
 
-//Carga el historial de prestamos del localstorage en la section
-/* let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
-let liTitleHistorial = document.createElement("li");
-liTitleHistorial.innerHTML = `Prestamos aprobados`;
-liTitleHistorial.classList.add('list-group-item');
-liTitleHistorial.classList.add('text-bg-warning')
-historialPrestamos.append(liTitleHistorial);
-for (const prest of prestamosAprobados) {
-    if (prest.apelClient != '' & prest.nomClient != '' & prest.montPrest != '' & prest.cantCuot != '' & prest.montCuot != '') {
-        let li = document.createElement("li");
-        li.innerHTML = `${prest.apelClient}, ${prest.nomClient} | Prestamo: $${prest.montPrest} | ${prest.cantCuot} cuotas de $${prest.montCuot}.`;
-        li.classList.add('list-group-item');
-        historialPrestamos.append(li);
-    }
-}; */
-
+//Carga el historial de prestamos del localstorage en la tabla
 let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
 let numeroRegistro = 0;
 for (const prest of prestamosAprobados) {
@@ -63,7 +48,7 @@ for (const prest of prestamosAprobados) {
 };
 
 
-//Verifico si no hay ningun prestamo cargado, si no hay cargo uno
+//Verifico si no hay ningun prestamo cargado, si no hay, cargo uno
 if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
 
 /////////////////////////////* INPUTS *////////////////////////////////
@@ -90,6 +75,7 @@ botonLimpiar.addEventListener("click", () => {
     document.getElementById("selectPrestamo").value = "";
 });
 
+//Borra los datos del localstorage
 let botonLimpiarHistorial = document.getElementById("btnLimpiarHistorial");
 botonLimpiarHistorial.addEventListener("click", (event) => {
     event.preventDefault(),
@@ -118,6 +104,7 @@ botonLimpiarHistorial.addEventListener("click", (event) => {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+//Para cargar los datos en el select cuando se agregan los datos
 let ingresosInput = document.getElementById("ingresoMensual");
 ingresosInput.onkeyup = () => {
     //Esto calcula el monto maximo de la cuota (30% de los ingresos)
@@ -173,6 +160,7 @@ function calcularPrestamo(nombreCliente, apellidoCliente, montoPrestamo, cuotasP
     localStorage.setItem('prestamosAprobados', JSON.stringify(datosExistentes));
 }
 
+//Borra los datos del localstorage y carga un elemento vacio para que funcione
 function limpiarHistoriaPrestamos() {
     localStorage.clear();
     localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
