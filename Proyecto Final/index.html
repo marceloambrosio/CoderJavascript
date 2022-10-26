@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<!-- Todo el HTML y CSS son posibles ideas de como 
-    ordenar el proyecto con el poco conocimiento
-    que tenia antes del curso 
-    NADA ES FUNCIONAL DE MOMENTO -->
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -72,7 +67,7 @@
                     <div class="row">
                         <div class="col">
                             <!-- Se habilitarian unicamente los planes de cuotas posibles unicamente -->
-                            <!-- En el caso de no poder usar ninguno, se envia un alert detallando -->
+                            <!-- En el caso de no poder usar ninguno, no se muestran opciones -->
                             <label class="mb-2">Seleccione el plan de cuotas</label>
                             <select name="tipoPrestamo" id="selectPrestamo" class="form-select"></select>
                         </div>
@@ -96,7 +91,6 @@
                 <ul id="tasasPrestamo" class="list-group col"></ul>
                 <br>
 
-                <!-- Mostrar un simulador de cantidad maxima que puede solicitar segun ingresos -->
                 <ul id="terminos" class="list-group col">
                     <li class="list-group-item text-bg-warning">Terminos y condiciones</li>
                     <li class="list-group-item">La cuota de los prestamos solicitados no pueden superar el 30% de
@@ -110,8 +104,7 @@
             <div class="container-sm px-4 my-4 card rounded-3 shadow-sm">
                 <br>
                 <h2>Historial de prestamos aprobados</h2>
-                <!-- Lista del array en donde se cargan todos los prestamos aprobados -->
-                <!-- <ul id="historialPrestamos" class="list-group col mb-4"></ul> -->
+                <!-- Tabla del array en donde se cargan todos los prestamos aprobados -->
                 <table
                     class="table table-striped table-hover table-responsive-lg container-sm px-4 my-4 rounded-3 shadow-sm">
                     <thead class="table-warning">
