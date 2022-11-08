@@ -24,12 +24,15 @@ fetch("./tasas.json")
         })
     });
 
+//Verifico si no hay ningun prestamo cargado, si no hay, cargo uno
+if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
+
 //Carga el historial de prestamos del localstorage en la tabla
 let prestamosAprobados = JSON.parse(localStorage.getItem("prestamosAprobados"));
 let numeroRegistro = 0;
 for (const prest of prestamosAprobados) {
     if (prest.apelClient != '' & prest.nomClient != '' & prest.montPrest != '' & prest.cantCuot != '' & prest.montCuot != '') {
-        numeroRegistro ++
+        numeroRegistro++
         let rowInicio = document.createElement("tr");
         let rowNum = document.createElement("td");
         let rowClient = document.createElement("td");
@@ -47,9 +50,6 @@ for (const prest of prestamosAprobados) {
     }
 };
 
-
-//Verifico si no hay ningun prestamo cargado, si no hay, cargo uno
-if (!JSON.parse(localStorage.getItem("prestamosAprobados"))) localStorage.setItem("prestamosAprobados", JSON.stringify([{ nomClient: '', apelClient: '', montPrest: '', cantCuot: '', montCuot: '' }]));
 
 /////////////////////////////* INPUTS *////////////////////////////////
 let botonPrestamo = document.getElementById("btnSolicitar");
